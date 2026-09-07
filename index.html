@@ -1,19 +1,40 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Geralista - Cadastro de Itens</title>
   <style>
+    /* Variáveis - Tema Escuro */
     :root {
-      --bg-dark: #0a0e14;
+      --bg-main: #0a0e14;
       --card-bg: #121820;
+      --header-bg: #06090e;
+      --footer-bg: #06090e; /* Igual ao Header no Escuro */
       --accent-green: #38ef7d;
       --accent-glow: rgba(56, 239, 125, 0.2);
-      --text-light: #ffffff;
+      --text-main: #ffffff;
       --text-muted: #8a99ad;
       --border-color: #1e293b;
       --input-bg: #0f141c;
+      --input-text: #ffffff;
+      --btn-text: #06090e;
+    }
+
+    /* Variáveis - Tema Claro */
+    [data-theme="light"] {
+      --bg-main: #f0f4f8;
+      --card-bg: #ffffff;
+      --header-bg: #ffffff;
+      --footer-bg: #ffffff; /* Igual ao Header no Claro */
+      --accent-green: #10b981;
+      --accent-glow: rgba(16, 185, 129, 0.15);
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --border-color: #cbd5e1;
+      --input-bg: #f8fafc;
+      --input-text: #0f172a;
+      --btn-text: #ffffff;
     }
 
     * {
@@ -21,18 +42,19 @@
       margin: 0;
       padding: 0;
       font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+      transition: background-color 0.3s, color 0.3s, border-color 0.3s;
     }
 
     body {
-      background-color: var(--bg-dark);
-      color: var(--text-light);
+      background-color: var(--bg-main);
+      color: var(--text-main);
       display: flex;
       flex-direction: column;
       min-height: 100vh;
     }
 
     header {
-      background: #06090e;
+      background: var(--header-bg);
       border-bottom: 1px solid var(--border-color);
       text-align: center;
       padding: 1.5rem 1rem;
@@ -40,6 +62,28 @@
       flex-direction: column;
       align-items: center;
       gap: 0.5rem;
+      position: relative;
+    }
+
+    .theme-toggle-btn {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: transparent;
+      border: 1px solid var(--accent-green);
+      color: var(--accent-green);
+      padding: 0.4rem 0.8rem;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .theme-toggle-btn:hover {
+      background: var(--accent-glow);
     }
 
     .header-logo {
@@ -60,7 +104,7 @@
       border-radius: 10px;
       padding: 1.5rem;
       border: 1px solid var(--border-color);
-      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
       margin-bottom: 1.5rem;
     }
 
@@ -91,13 +135,13 @@
       border: 1px solid var(--border-color);
       border-radius: 6px;
       font-size: 1rem;
-      color: var(--text-light);
+      color: var(--input-text);
       outline: none;
     }
 
     .form-group input:focus, .form-group select:focus {
       border-color: var(--accent-green);
-      box-shadow: 0 0 10px var(--accent-glow);
+      box-shadow: 0 0 8px var(--accent-glow);
     }
 
     .btn {
@@ -110,16 +154,15 @@
       cursor: pointer;
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      transition: all 0.2s;
     }
 
     .btn-green {
       background-color: var(--accent-green);
-      color: #06090e;
+      color: var(--btn-text);
     }
 
     .btn-green:hover {
-      box-shadow: 0 0 15px var(--accent-glow);
+      box-shadow: 0 0 12px var(--accent-glow);
       opacity: 0.9;
     }
 
@@ -151,7 +194,7 @@
     .quantity {
       font-weight: bold;
       color: var(--accent-green);
-      background: rgba(56, 239, 125, 0.1);
+      background: var(--accent-glow);
       padding: 2px 10px;
       border-radius: 12px;
       font-size: 0.85rem;
@@ -159,7 +202,7 @@
     }
 
     footer {
-      background-color: #06090e;
+      background-color: var(--footer-bg);
       border-top: 1px solid var(--border-color);
       padding: 1.5rem 1rem;
       margin-top: auto;
@@ -172,13 +215,16 @@
       height: auto;
       border-radius: 8px;
       border: 1px solid var(--border-color);
-      box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     }
   </style>
 </head>
 <body>
 
   <header>
+    <button class="theme-toggle-btn" id="theme-toggle">
+      <span id="theme-icon">☀️</span> <span id="theme-text">Modo Claro</span>
+    </button>
     <img src="img/geralista-removebg-preview.png" alt="Geralista Logo" class="header-logo">
     <p style="color: var(--text-muted); font-size: 0.85rem;">Lista de Compras Inteligente</p>
   </header>
@@ -221,12 +267,36 @@
   </main>
 
   <footer>
-    <img src="img/gs_interactive-2-removebg-preview.png" alt="GS Interactive Footer Banner" class="footer-card-img">
+    <img src="img/gs_interictive-molde-removebg-preview.png" alt="GS Interactive Footer Banner" class="footer-card-img">
   </footer>
 
   <script>
-    let shoppingList = JSON.parse(localStorage.getItem('mariana_shopping_list')) || [];
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const themeIcon = document.getElementById('theme-icon');
+    const themeText = document.getElementById('theme-text');
 
+    function applyTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem('geralista_theme', theme);
+
+      if (theme === 'light') {
+        themeIcon.textContent = '🌙';
+        themeText.textContent = 'Modo Escuro';
+      } else {
+        themeIcon.textContent = '☀️';
+        themeText.textContent = 'Modo Claro';
+      }
+    }
+
+    const savedTheme = localStorage.getItem('geralista_theme') || 'dark';
+    applyTheme(savedTheme);
+
+    themeToggleBtn.addEventListener('click', () => {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
+    });
+
+    let shoppingList = JSON.parse(localStorage.getItem('mariana_shopping_list')) || [];
     const itemForm = document.getElementById('item-form');
     const previewList = document.getElementById('preview-list');
     const itemsCount = document.getElementById('items-count');

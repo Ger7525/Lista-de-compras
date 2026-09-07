@@ -1,19 +1,36 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Geralista - Lista de Compras</title>
   <style>
+    /* Variáveis - Tema Escuro */
     :root {
-      --bg-dark: #0a0e14;
+      --bg-main: #0a0e14;
       --card-bg: #121820;
+      --header-bg: #06090e;
+      --footer-bg: #06090e; /* Igual ao Header no Escuro */
       --accent-green: #38ef7d;
       --accent-glow: rgba(56, 239, 125, 0.2);
-      --text-light: #ffffff;
+      --text-main: #ffffff;
       --text-muted: #8a99ad;
       --border-color: #1e293b;
       --danger: #ff4757;
+    }
+
+    /* Variáveis - Tema Claro */
+    [data-theme="light"] {
+      --bg-main: #f0f4f8;
+      --card-bg: #ffffff;
+      --header-bg: #ffffff;
+      --footer-bg: #ffffff; /* Igual ao Header no Claro */
+      --accent-green: #10b981;
+      --accent-glow: rgba(16, 185, 129, 0.15);
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --border-color: #cbd5e1;
+      --danger: #e11d48;
     }
 
     * {
@@ -21,24 +38,46 @@
       margin: 0;
       padding: 0;
       font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+      transition: background-color 0.3s, color 0.3s, border-color 0.3s;
     }
 
     body {
-      background-color: var(--bg-dark);
-      color: var(--text-light);
+      background-color: var(--bg-main);
+      color: var(--text-main);
       display: flex;
       flex-direction: column;
       min-height: 100vh;
     }
 
     header {
-      background: #06090e;
+      background: var(--header-bg);
       border-bottom: 1px solid var(--border-color);
       text-align: center;
       padding: 1.2rem 1rem;
       display: flex;
       justify-content: center;
       align-items: center;
+      position: relative;
+    }
+
+    .theme-toggle-btn {
+      position: absolute;
+      right: 1rem;
+      background: transparent;
+      border: 1px solid var(--accent-green);
+      color: var(--accent-green);
+      padding: 0.4rem 0.8rem;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .theme-toggle-btn:hover {
+      background: var(--accent-glow);
     }
 
     .header-logo {
@@ -70,7 +109,6 @@
       cursor: pointer;
       text-decoration: none;
       text-transform: uppercase;
-      transition: all 0.2s;
     }
 
     .btn-outline {
@@ -90,7 +128,7 @@
     }
 
     .btn-danger:hover {
-      background: rgba(255, 71, 87, 0.1);
+      background: rgba(225, 29, 72, 0.1);
     }
 
     .progress-card {
@@ -99,6 +137,7 @@
       border-radius: 10px;
       padding: 1.25rem;
       margin-bottom: 1.5rem;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
     }
 
     .progress-header {
@@ -110,7 +149,7 @@
     }
 
     .progress-bar-bg {
-      background-color: #0f141c;
+      background-color: var(--bg-main);
       height: 16px;
       border-radius: 8px;
       border: 1px solid var(--border-color);
@@ -118,7 +157,7 @@
     }
 
     .progress-bar-fill {
-      background: linear-gradient(90deg, #00b09b, var(--accent-green));
+      background: linear-gradient(90deg, #10b981, var(--accent-green));
       height: 100%;
       width: 0%;
       transition: width 0.3s ease;
@@ -135,6 +174,7 @@
       border-radius: 10px;
       padding: 1.25rem;
       border: 1px solid var(--border-color);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
     }
 
     .sector-card h2 {
@@ -173,7 +213,7 @@
       font-weight: bold;
       color: var(--accent-green);
       font-size: 0.85rem;
-      background: rgba(56, 239, 125, 0.1);
+      background: var(--accent-glow);
       padding: 2px 8px;
       border-radius: 12px;
       border: 1px solid var(--accent-green);
@@ -185,7 +225,7 @@
     }
 
     footer {
-      background-color: #06090e;
+      background-color: var(--footer-bg);
       border-top: 1px solid var(--border-color);
       padding: 1.5rem 1rem;
       margin-top: auto;
@@ -198,7 +238,7 @@
       height: auto;
       border-radius: 8px;
       border: 1px solid var(--border-color);
-      box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     }
   </style>
 </head>
@@ -206,6 +246,9 @@
 
   <header>
     <img src="img/geralista-removebg-preview.png" alt="Geralista Logo" class="header-logo">
+    <button class="theme-toggle-btn" id="theme-toggle">
+      <span id="theme-icon">☀️</span> <span id="theme-text">Modo Claro</span>
+    </button>
   </header>
 
   <main>
@@ -228,12 +271,36 @@
   </main>
 
   <footer>
-    <img src="img/gs_interactive-2-removebg-preview.png" alt="GS Interactive Footer Banner" class="footer-card-img">
+    <img src="img/gs_interictive-molde-removebg-preview.png" alt="GS Interactive Footer Banner" class="footer-card-img">
   </footer>
 
   <script>
-    let shoppingList = JSON.parse(localStorage.getItem('mariana_shopping_list')) || [];
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const themeIcon = document.getElementById('theme-icon');
+    const themeText = document.getElementById('theme-text');
 
+    function applyTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem('geralista_theme', theme);
+
+      if (theme === 'light') {
+        themeIcon.textContent = '🌙';
+        themeText.textContent = 'Modo Escuro';
+      } else {
+        themeIcon.textContent = '☀️';
+        themeText.textContent = 'Modo Claro';
+      }
+    }
+
+    const savedTheme = localStorage.getItem('geralista_theme') || 'dark';
+    applyTheme(savedTheme);
+
+    themeToggleBtn.addEventListener('click', () => {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
+    });
+
+    let shoppingList = JSON.parse(localStorage.getItem('mariana_shopping_list')) || [];
     const sectorsContainer = document.getElementById('sectors-container');
     const progressBarFill = document.getElementById('progress-bar-fill');
     const progressText = document.getElementById('progress-text');
