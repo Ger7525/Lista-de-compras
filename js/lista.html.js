@@ -3,6 +3,7 @@ const sectorsContainer = document.getElementById('sectors-container');
 const progressBarFill = document.getElementById('progress-bar-fill');
 const progressText = document.getElementById('progress-text');
 const btnClear = document.getElementById('btn-clear');
+const btnWhatsApp = document.getElementById('btn-whatsapp');
 
 function saveData() {
   localStorage.setItem('mariana_shopping_list', JSON.stringify(shoppingList));
@@ -73,6 +74,35 @@ if (btnClear) {
       saveData();
       renderShoppingList();
     }
+  });
+}
+
+if (btnWhatsApp) {
+  btnWhatsApp.addEventListener('click', () => {
+    if (shoppingList.length === 0) {
+      alert('Sua lista está vazia!');
+      return;
+    }
+
+    const categories = {};
+    shoppingList.forEach(item => {
+      if (!categories[item.category]) categories[item.category] = [];
+      categories[item.category].push(item);
+    });
+
+    let message = "*🛒 LISTA DE COMPRAS - GERALISTA*\n\n";
+
+    Object.keys(categories).forEach(cat => {
+      message += `*${cat.toUpperCase()}*\n`;
+      categories[cat].forEach(item => {
+        const status = item.checked ? "✅" : "⏹️";
+        message += `${status} ${item.name} - ${item.qty}\n`;
+      });
+      message += "\n";
+    });
+
+    const encodedMessage = encodeURIComponent(message);
+    window.open(`https://wa.me/?text=${encodedMessage}`, '_blank');
   });
 }
 
