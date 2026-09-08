@@ -4,220 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Geralista - Cadastro de Itens</title>
-  <style>
-    /* Variáveis - Tema Escuro */
-    :root {
-      --bg-main: #0a0e14;
-      --card-bg: #121820;
-      --header-bg: #06090e;
-      --footer-bg: #06090e; /* Igual ao Header no Escuro */
-      --accent-green: #38ef7d;
-      --accent-glow: rgba(56, 239, 125, 0.2);
-      --text-main: #ffffff;
-      --text-muted: #8a99ad;
-      --border-color: #1e293b;
-      --input-bg: #0f141c;
-      --input-text: #ffffff;
-      --btn-text: #06090e;
-    }
-
-    /* Variáveis - Tema Claro */
-    [data-theme="light"] {
-      --bg-main: #f0f4f8;
-      --card-bg: #ffffff;
-      --header-bg: #ffffff;
-      --footer-bg: #ffffff; /* Igual ao Header no Claro */
-      --accent-green: #10b981;
-      --accent-glow: rgba(16, 185, 129, 0.15);
-      --text-main: #1e293b;
-      --text-muted: #64748b;
-      --border-color: #cbd5e1;
-      --input-bg: #f8fafc;
-      --input-text: #0f172a;
-      --btn-text: #ffffff;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
-      transition: background-color 0.3s, color 0.3s, border-color 0.3s;
-    }
-
-    body {
-      background-color: var(--bg-main);
-      color: var(--text-main);
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
-
-    header {
-      background: var(--header-bg);
-      border-bottom: 1px solid var(--border-color);
-      text-align: center;
-      padding: 1.5rem 1rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.5rem;
-      position: relative;
-    }
-
-    .theme-toggle-btn {
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-      background: transparent;
-      border: 1px solid var(--accent-green);
-      color: var(--accent-green);
-      padding: 0.4rem 0.8rem;
-      border-radius: 20px;
-      cursor: pointer;
-      font-weight: 600;
-      font-size: 0.85rem;
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-    }
-
-    .theme-toggle-btn:hover {
-      background: var(--accent-glow);
-    }
-
-    .header-logo {
-      max-width: 220px;
-      height: auto;
-    }
-
-    main {
-      flex: 1;
-      max-width: 650px;
-      width: 100%;
-      margin: 2rem auto;
-      padding: 0 1rem;
-    }
-
-    .card {
-      background: var(--card-bg);
-      border-radius: 10px;
-      padding: 1.5rem;
-      border: 1px solid var(--border-color);
-      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-      margin-bottom: 1.5rem;
-    }
-
-    .card h2 {
-      color: var(--accent-green);
-      font-size: 1.25rem;
-      margin-bottom: 1.2rem;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .form-group {
-      margin-bottom: 1.2rem;
-    }
-
-    .form-group label {
-      display: block;
-      font-weight: 600;
-      margin-bottom: 0.4rem;
-      color: var(--text-muted);
-      font-size: 0.9rem;
-    }
-
-    .form-group input, .form-group select {
-      width: 100%;
-      padding: 0.75rem;
-      background: var(--input-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 6px;
-      font-size: 1rem;
-      color: var(--input-text);
-      outline: none;
-    }
-
-    .form-group input:focus, .form-group select:focus {
-      border-color: var(--accent-green);
-      box-shadow: 0 0 8px var(--accent-glow);
-    }
-
-    .btn {
-      width: 100%;
-      padding: 0.85rem;
-      font-size: 1rem;
-      font-weight: 700;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .btn-green {
-      background-color: var(--accent-green);
-      color: var(--btn-text);
-    }
-
-    .btn-green:hover {
-      box-shadow: 0 0 12px var(--accent-glow);
-      opacity: 0.9;
-    }
-
-    .btn-outline {
-      background: transparent;
-      border: 1px solid var(--accent-green);
-      color: var(--accent-green);
-      text-decoration: none;
-      display: block;
-      text-align: center;
-    }
-
-    .btn-outline:hover {
-      background: var(--accent-glow);
-    }
-
-    .preview-list {
-      list-style: none;
-      margin-top: 1rem;
-    }
-
-    .preview-list li {
-      display: flex;
-      justify-content: space-between;
-      padding: 0.6rem 0;
-      border-bottom: 1px solid var(--border-color);
-    }
-
-    .quantity {
-      font-weight: bold;
-      color: var(--accent-green);
-      background: var(--accent-glow);
-      padding: 2px 10px;
-      border-radius: 12px;
-      font-size: 0.85rem;
-      border: 1px solid var(--accent-green);
-    }
-
-    footer {
-      background-color: var(--footer-bg);
-      border-top: 1px solid var(--border-color);
-      padding: 1.5rem 1rem;
-      margin-top: auto;
-      text-align: center;
-    }
-
-    .footer-card-img {
-      max-width: 100%;
-      width: 520px;
-      height: auto;
-      border-radius: 8px;
-      border: 1px solid var(--border-color);
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    }
-  </style>
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
@@ -229,7 +16,7 @@
     <p style="color: var(--text-muted); font-size: 0.85rem;">Lista de Compras Inteligente</p>
   </header>
 
-  <main>
+  <main style="max-width: 650px;">
     <div class="card">
       <h2>Adicionar Item</h2>
       <form id="item-form">
@@ -246,6 +33,7 @@
         <div class="form-group">
           <label for="item-category">Categoria</label>
           <select id="item-category" required>
+            <option value="🍎 Frutas e Hortaliças">🍎 Frutas e Hortaliças</option>
             <option value="🌾 Cereais">🌾 Cereais</option>
             <option value="🧀 Laticínios">🧀 Laticínios</option>
             <option value="🧼 Limpeza e Higiene">🧼 Limpeza e Higiene</option>
@@ -270,75 +58,7 @@
     <img src="img/gs_interictive-molde-removebg-preview.png" alt="GS Interactive Footer Banner" class="footer-card-img">
   </footer>
 
-  <script>
-    const themeToggleBtn = document.getElementById('theme-toggle');
-    const themeIcon = document.getElementById('theme-icon');
-    const themeText = document.getElementById('theme-text');
-
-    function applyTheme(theme) {
-      document.documentElement.setAttribute('data-theme', theme);
-      localStorage.setItem('geralista_theme', theme);
-
-      if (theme === 'light') {
-        themeIcon.textContent = '🌙';
-        themeText.textContent = 'Modo Escuro';
-      } else {
-        themeIcon.textContent = '☀️';
-        themeText.textContent = 'Modo Claro';
-      }
-    }
-
-    const savedTheme = localStorage.getItem('geralista_theme') || 'dark';
-    applyTheme(savedTheme);
-
-    themeToggleBtn.addEventListener('click', () => {
-      const currentTheme = document.documentElement.getAttribute('data-theme');
-      applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
-    });
-
-    let shoppingList = JSON.parse(localStorage.getItem('mariana_shopping_list')) || [];
-    const itemForm = document.getElementById('item-form');
-    const previewList = document.getElementById('preview-list');
-    const itemsCount = document.getElementById('items-count');
-
-    function saveData() {
-      localStorage.setItem('mariana_shopping_list', JSON.stringify(shoppingList));
-    }
-
-    function renderPreview() {
-      previewList.innerHTML = '';
-      itemsCount.textContent = shoppingList.length;
-
-      if (shoppingList.length === 0) {
-        previewList.innerHTML = '<li style="color: var(--text-muted); justify-content: center;">Nenhum item cadastrado.</li>';
-        return;
-      }
-
-      shoppingList.forEach((item) => {
-        const li = document.createElement('li');
-        li.innerHTML = `
-          <span><strong>${item.name}</strong> <small style="color:var(--text-muted)">(${item.category})</small></span>
-          <span class="quantity">${item.qty}</span>
-        `;
-        previewList.appendChild(li);
-      });
-    }
-
-    itemForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const name = document.getElementById('item-name').value.trim();
-      const qty = document.getElementById('item-qty').value.trim();
-      const category = document.getElementById('item-category').value;
-
-      if (name && qty) {
-        shoppingList.push({ id: Date.now(), name, qty, category, checked: false });
-        saveData();
-        itemForm.reset();
-        renderPreview();
-      }
-    });
-
-    renderPreview();
-  </script>
+  <script src="js/app.js"></script>
+  <script src="js/index.html.js"></script>
 </body>
 </html>
